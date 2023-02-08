@@ -1,0 +1,180 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+{% block title %}Locations{% endblock title %}
+{% block content %}
+<div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+    <!--begin::Wrapper container-->
+    <div class="app-container container-xxl d-flex flex-row flex-column-fluid">
+        <!--begin::Main-->
+        <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+            <!--begin::Content wrapper-->
+            <div class="d-flex flex-column flex-column-fluid">
+                <!--begin::Toolbar-->
+                <div id="kt_app_toolbar" class="app-toolbar align-items-center justify-content-between py-2 py-lg-4">
+                    <!--begin::Toolbar wrapper-->
+                    <div class="d-flex flex-grow-1 flex-stack flex-wrap gap-2 mb-n10" id="kt_toolbar">
+                        <!--begin::Page title-->
+                        <div class="d-flex flex-column align-items-start me-3 gap-2">
+                            <!--begin::Title-->
+                            <h1 class="d-flex text-dark fw-bold m-0 fs-3">Locations</h1>
+                            <!--end::Title-->
+                            <!--begin::Breadcrumb-->
+                            <ul class="breadcrumb breadcrumb-dot fw-semibold text-gray-600 fs-7">
+                                <!--begin::Item-->
+                                <li class="breadcrumb-item text-gray-600">
+                                    <a href="../../demo22/dist/index.html" class="text-gray-600 text-hover-primary">Home</a>
+                                </li>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <li class="breadcrumb-item text-gray-600">eCommerce</li>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <li class="breadcrumb-item text-gray-600">Catalog</li>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <li class="breadcrumb-item text-gray-500">Locations</li>
+                                <!--end::Item-->
+                            </ul>
+                            <!--end::Breadcrumb-->
+                        </div>
+                        <!--end::Page title-->
+                    </div>
+                    <!--end::Toolbar wrapper-->
+                </div>
+                <!--end::Toolbar-->
+                <!--begin::Content-->
+                <div id="kt_app_content" class="app-content flex-column-fluid">
+                    <!--begin::Category-->
+                    <div class="card card-flush">
+                        <!--begin::Card body-->
+                        <div class="card-body pt-0">
+                            <!--begin::Table-->
+                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
+                                <!--begin::Table head-->
+                                <thead>
+                                    <!--begin::Table row-->
+                                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                        <th class="w-10px pe-2">
+                                            <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                                <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_ecommerce_category_table .form-check-input" value="1" />
+                                            </div>
+                                        </th>
+                                        <th class="min-w-250px">Location</th>
+                                        <th class="min-w-150px">Change Status</th>
+                                        <th class="text-end min-w-70px">Actions</th>
+                                    </tr>
+                                    <!--end::Table row-->
+                                </thead>
+                                <!--end::Table head-->
+                                <!--begin::Table body-->
+                                <tbody class="fw-semibold text-gray-600">
+                                    <!--begin::Table row-->
+                                    {% for restaurant in restaurants %}
+                                    <tr>
+                                        <!--begin::Checkbox-->
+                                        <td>
+                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                <input class="form-check-input" type="checkbox" value="1" />
+                                            </div>
+                                        </td>
+                                        <!--end::Checkbox-->
+                                        <!--begin::Category=-->
+                                        <td>
+                                            <div class="d-flex">
+                                                <!--begin::Thumbnail-->
+                                                <a href="../../demo22/dist/apps/ecommerce/catalog/edit-category.html" class="symbol symbol-50px">
+                                                    <span class="symbol-label" style="background-image:url(assets/media//stock/ecommerce/68.gif);"></span>
+                                                </a>
+                                                <!--end::Thumbnail-->
+                                                <div class="ms-5">
+                                                    <!--begin::Title-->
+                                                    <a href="" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">{{restaurant.name}}</a>
+                                                    <!--end::Title-->
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7 fw-bold">{{ restaurant.get_status_display }}</div>
+                                                    <!--end::Description-->
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <!--end::Category=-->
+                                        <!--begin::Type=-->
+                                        <td>
+                                            <!--begin::Badges-->
+                                            
+                                            {% if restaurant.status == "open" %}
+                                                <form method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="restaurant_id" value="{{ restaurant.lid }}">
+                                                    <input type="submit" class="btn btn-danger" name="action" value="Close">
+                                                </form>
+                                            {% else %}
+                                                <form method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="restaurant_id" value="{{ restaurant.lid }}">
+                                                    <input type="submit" class="btn btn-primary" name="action" value="Open">
+                                                </form>
+                                            {% endif %}  
+                                            <!--end::Badges-->
+                                        </td>
+                                        <!--end::Type=-->
+                                        <!--begin::Action=-->
+                                        <td class="text-end">
+                                            <!--begin::Button-->
+                                            <button id="kt_clipboard_3" class="btn btn-light-primary" data-clipboard-text="{{ restaurant.lid }}">
+                                                Copy Location Id
+                                            </button>
+                                            <!--end::Button-->
+                                        </td>
+                                        <!--end::Action=-->
+                                    </tr>
+                                    {% endfor %}
+                                    <!--end::Table row-->
+                                </tbody>
+                                <!--end::Table body-->
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Category-->
+                </div>
+                <!--end::Content-->
+            </div>
+            <!--end::Content wrapper-->
+        </div>
+        <!--end:::Main-->
+    </div>
+    <!--end::Wrapper container-->
+</div>
+{% endblock %}
+{% block js %}
+	<script src="{% static '/assets/js/custom/apps/ecommerce/catalog/categories.js' %}"></script>
+	<script src="{% static '/assets/js/custom/utilities/modals/create-app.js' %}"></script>
+
+    <script>
+        // Select element
+        const target = document.getElementById('kt_clipboard_3');
+
+        // Init clipboard -- for more info, please read the offical documentation: https://clipboardjs.com/
+        clipboard = new ClipboardJS(target);
+
+        // Success action handler
+        clipboard.on('success', function (e) {
+            const currentLabel = target.innerHTML;
+
+            // Exit label update when already in progress
+            if (target.innerHTML === 'Copied!') {
+                return;
+            }
+
+            // Update button label
+            target.innerHTML = 'Copied!';
+
+            // Revert button label after 3 seconds
+            setTimeout(function () {
+                target.innerHTML = currentLabel;
+            }, 3000)
+        });
+    </script>
+
+{% endblock js %}

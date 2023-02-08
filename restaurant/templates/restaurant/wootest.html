@@ -1,0 +1,15 @@
+{% for product in products %}
+<h1>Product Name:{{product.name}}</h1>
+{% for dim in product.categories %}
+<h2>Produtc Category:{{dim.name}}</h2>
+{% endfor %}
+{% for meta in product.meta_data %}
+{% if meta.key == 'woores_options'%}
+
+<h6>{{meta.value}}</h6>
+{% endif %}
+
+{% endfor %}
+
+
+{% endfor %}
